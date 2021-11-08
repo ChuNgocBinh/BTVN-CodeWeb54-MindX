@@ -6,39 +6,46 @@ export default class Post extends BaseComponent {
     }
 
     render() {
+
         let $container = document.createElement('div');
-        $container.className = 'container d-flex align-items-center  border-bottom '
 
-        let $imgUrl = document.createElement('img');
-        $imgUrl.className = 'me-3'
-        $imgUrl.style.width = '250px'
-        $imgUrl.src = this.props.imgUrl;
+        let listPosts = this.props.posts.map((post) => {
 
-        let $content = document.createElement('div');
-        // $content.className = 'flex-shrink-3'
+            let $imgUrl = document.createElement('img');
+            $imgUrl.className = 'me-3'
+            $imgUrl.style.width = '250px'
+            $imgUrl.src = post.imgUrl;
+
+            let $content = document.createElement('div');
 
 
-        let $title = document.createElement('h4');
-        $title.innerHTML = this.props.title;
+            let $title = document.createElement('h4');
+            $title.innerHTML = post.title;
 
-        let $description = document.createElement('p');
-        $description.innerHTML = this.props.description;
+            let $description = document.createElement('p');
+            $description.innerHTML = post.description;
 
-        let $likeCount = document.createElement('p');
-        $likeCount.innerHTML = 'Like: ' + this.props.likeCount;
+            let $likeCount = document.createElement('p');
+            $likeCount.innerHTML = 'Like: ' + post.likeCount;
 
-        let $author = document.createElement('p');
-        $author.innerHTML = 'Author: ' + this.props.author;
+            let $author = document.createElement('p');
+            $author.innerHTML = 'Author: ' + post.author;
 
-        let $btn = document.createElement('button');
-        $btn.innerHTML = 'Xem';
-        $btn.className = 'btn btn-primary'
-        $btn.onclick = () => {
-            this.props.onClick();
-        }
-        $content.append($title, $description, $likeCount, $author, $btn)
+            let $btn = document.createElement('button');
+            $btn.innerHTML = 'Xem';
+            $btn.className = 'btn btn-primary'
+            $btn.onclick = () => {
+                this.props.onClick(post._id);
+            }
+            $content.append($title, $description, $likeCount, $author, $btn)
 
-        $container.append($imgUrl, $content);
+            let $postGroup = document.createElement('div')
+            $postGroup.className = 'container d-flex align-items-center  border-bottom '
+            $postGroup.append($imgUrl, $content)
+            return $postGroup
+        })
+
+        $container.append(...listPosts);
 
         return $container;
 

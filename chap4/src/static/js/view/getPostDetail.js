@@ -1,60 +1,86 @@
 import BaseComponent from "../components/BaseComponent.js";
+import Form from "../components/form.js";
 import Navbar from "../components/navbar.js";
 import Post from "../components/post.js";
+import { appendTo } from "../utils.js";
 
 export default class GetPostDetail extends BaseComponent {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            post: {},
+            comments: [],
+            valueComment: '',
+        };
     }
 
-    async render() {
+    async componentDidMount() {
+        let tmpState = this.state;
+        let postIdJSON = localStorage.getItem('postId');
+        let postId = JSON.parse(postIdJSON)
         await fetch('http://localhost:9000/api/posts')
             .then(response => response.json())
             .then(data => {
-                this.state.data = data
+                let postDetail = data.posts.find(post => postId == post._id);
+                tmpState.post = postDetail
             })
 
         await fetch('http://localhost:9000/api/comments')
             .then(response => response.json())
             .then(data => {
-                this.state.comments = data
+                let commentsDetail = data.comments.filter(comment => comment.postId == postId);
+                tmpState.comments = commentsDetail;
             })
-
+        this.setState(tmpState);
         console.log(this.state);
+    }
 
-        let postIdJSON = localStorage.getItem('postId');
-        let postId = JSON.parse(postIdJSON)
-        let postDetail = this.state.data.posts.find(post => postId == post._id);
-        let commentsDetail = this.state.comments.comments.filter(comment => comment.postId == postId);
-            console.log(commentsDetail);
+    handleSubmit(e) {
+        e.preventDefault();
+        let tmpState = this.state;
+        let newComment = {
+            author: 'binh be',
+            content: tmpState.valueComment
+        }
+        tmpState.comments.push(newComment)
+        this.state.valueComment = ''
+        this.setState(tmpState);
+        console.log(tmpState);
+    }
+
+    handleChange(value) {
+        let tmpState = this.state;
+        this.state.valueComment = value;
+        this.setState(tmpState);
+    }
+
+    render() {
 
         let $container = document.createElement('div');
 
         $container.append(new Navbar().render())
 
-
         let $content = document.createElement('div');
 
         let $imgUrl = document.createElement('img');
-        $imgUrl.src = postDetail.imgUrl;
+        $imgUrl.src = this.state.post.imgUrl;
 
 
         let $title = document.createElement('h4');
-        $title.innerHTML = postDetail.title;
+        $title.innerHTML = this.state.post.title;
 
         let $description = document.createElement('p');
-        $description.innerHTML = postDetail.description;
+        $description.innerHTML = this.state.post.description;
 
         let $likeCount = document.createElement('p');
-        $likeCount.innerHTML = 'Like: ' + postDetail.likeCount;
+        $likeCount.innerHTML = 'Like: ' + this.state.post.likeCount;
 
         let $author = document.createElement('p');
-        $author.innerHTML = 'Author: ' + postDetail.author;
+        $author.innerHTML = 'Author: ' + this.state.post.author;
 
-        $content.append($imgUrl,$title, $description, $likeCount, $author)
+        $content.append($imgUrl, $title, $description, $likeCount, $author)
 
-        let listComment = commentsDetail.map(comment => {
+        let listComment = this.state.comments.map(comment => {
             let $comment = document.createElement('div');
             $comment.className = 'mb-2'
 
@@ -67,28 +93,26 @@ export default class GetPostDetail extends BaseComponent {
             return $comment;
         })
 
-        let $form = document.createElement('form')
-
-        let $input = document.createElement('input')
-        $input.placeholder = 'Nhập comment';
-        $input.className = 'form-control';
-
-        let $btnCmt = document.createElement('button')
-        $btnCmt.innerHTML = 'Gửi';
-        $btnCmt.className = 'btn btn-primary';
-
-        $form.append($input,$btnCmt);
-
         let $interact = document.createElement('div');
         $interact.className = 'ms-5'
-        $interact.append(...listComment, $form)
+        $interact.append(...listComment)
+        appendTo($interact, new Form({
+            value: this.state.valueComment,
+            onSubmit: (e) => {
+               this.handleSubmit(e)
+            },
+            onChange: (value) => {
+                this.handleChange(value);
+
+            }
+        }))
 
         let $post = document.createElement('div')
         $post.className = 'd-flex '
-        $post.append( $content,$interact );
+        $post.append($content, $interact);
 
 
-        $container.append( $post );
+        $container.append($post);
         return $container
     }
 }

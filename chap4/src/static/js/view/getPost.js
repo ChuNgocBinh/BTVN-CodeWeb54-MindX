@@ -1,39 +1,46 @@
 import BaseComponent from '../components/BaseComponent.js'
 import Navbar from '../components/navbar.js';
 import Post from '../components/post.js';
+import { appendTo } from '../utils.js';
 
 
 export default class GetPost extends BaseComponent {
     constructor(props) {
         super(props);
+        this.state = {
+            posts: []
+        }
     }
 
     handleClick(id){
         localStorage.setItem('postId',JSON.stringify(id))
         router.navigate('/detail');
     }
-
-    async render() {
-        let $container = document.createElement('div');
-        $container.append(new Navbar().render())
+    async componentDidMount() {
+        let tmpState = this.state;
         await fetch('http://localhost:9000/api/posts')
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                data.posts.map(post => {
-                    $container.append(new Post({
-                        imgUrl: post.imgUrl,
-                        title: post.title,
-                        description: post.description,
-                        likeCount: post.likeCount,
-                        author: post.author,
-                        onClick: () => {
-                            this.handleClick(post._id)
-                        }
-                    }).render()
-                    )
-                })
+                tmpState.posts = data.posts;
+                console.log(tmpState);
             })
+        this.setState(tmpState);
+    }
+
+    render() {
+        let $container = document.createElement('div');
+
+        let _navBar = new Navbar();
+        
+        let _post = new Post({
+            posts: this.state.posts,
+            onClick:(id)=>{
+                this.handleClick(id)
+            }
+        });
+
+        appendTo($container,_navBar, _post);
         return $container
     }
 }

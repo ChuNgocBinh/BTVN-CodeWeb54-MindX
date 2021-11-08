@@ -1,11 +1,12 @@
 import GetPost from './view/getPost.js'
 import './router.js'
 import GetPostDetail from './view/getPostDetail.js';
+import { appendTo } from './utils.js';
 
-async function show(){
+ async function show(){
     let $app = document.querySelector('#app');
-     $app.append(await new GetPost().render());
-    //  $app.append(await new GetPostDetail().render());
+     appendTo($app, await new GetPost());
+    //  appendTo($app, new GetPostDetail());
 }
 
 

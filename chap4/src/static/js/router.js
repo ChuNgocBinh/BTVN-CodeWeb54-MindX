@@ -1,3 +1,4 @@
+import { appendTo } from "./utils.js";
 import GetPost from "./view/getPost.js";
 import GetPostDetail from "./view/getPostDetail.js";
 
@@ -8,16 +9,16 @@ var router = new Navigo(root, useHash, hash);
 let $app = document.querySelector('#app');
 
 router
-    .on('/detail', async function() {
+    .on('/detail', function() {
         $app.innerHTML = '';
-        $app.append(await new GetPostDetail().render());
+       appendTo( $app,  new GetPostDetail());
     })
     .resolve();
 
 router
-    .on('/home', async function() {
+    .on('/home',  function() {
         $app.innerHTML = '';
-        $app.append(await new GetPost().render());
+        appendTo($app,  new GetPost());
     })
     .resolve();
 
