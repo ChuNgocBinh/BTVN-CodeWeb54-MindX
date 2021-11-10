@@ -21,7 +21,7 @@ export default class Form extends BaseComponent{
 
         let $btnCmt = document.createElement('button')
         $btnCmt.innerHTML = 'Gửi';
-        $btnCmt.className = 'btn btn-primary';
+        $btnCmt.className = 'btn btn-primary mt-1';
 
         $form.append($input,$btnCmt);
 

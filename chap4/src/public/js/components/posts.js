@@ -1,6 +1,6 @@
 import BaseComponent from './BaseComponent.js'
 
-export default class Post extends BaseComponent {
+export default class Posts extends BaseComponent {
     constructor(props) {
         super(props)
     }
@@ -26,10 +26,10 @@ export default class Post extends BaseComponent {
             $description.innerHTML = post.description;
 
             let $likeCount = document.createElement('p');
-            $likeCount.innerHTML = 'Like: ' + post.likeCount;
+            $likeCount.innerHTML = 'Lượt thích: ' + post.likeCount;
 
             let $author = document.createElement('p');
-            $author.innerHTML = 'Author: ' + post.author;
+            $author.innerHTML = 'Người viết: ' + post.createBy;
 
             let $btn = document.createElement('button');
             $btn.innerHTML = 'Xem';

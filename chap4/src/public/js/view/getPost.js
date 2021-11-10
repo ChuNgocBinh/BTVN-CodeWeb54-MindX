@@ -1,6 +1,7 @@
 import BaseComponent from '../components/BaseComponent.js'
 import Navbar from '../components/navbar.js';
-import Post from '../components/post.js';
+import Posts from '../components/posts.js';
+import { getAllposts, getCommentsBypost } from '../models/getData.js';
 import { appendTo } from '../utils.js';
 
 
@@ -18,13 +19,8 @@ export default class GetPost extends BaseComponent {
     }
     async componentDidMount() {
         let tmpState = this.state;
-        await fetch('http://localhost:9000/api/posts')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                tmpState.posts = data.posts;
-                console.log(tmpState);
-            })
+        let posts = await getAllposts();
+        tmpState.posts = posts;
         this.setState(tmpState);
     }
 
@@ -33,7 +29,7 @@ export default class GetPost extends BaseComponent {
 
         let _navBar = new Navbar();
         
-        let _post = new Post({
+        let _post = new Posts({
             posts: this.state.posts,
             onClick:(id)=>{
                 this.handleClick(id)
