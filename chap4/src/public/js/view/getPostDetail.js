@@ -31,8 +31,9 @@ export default class GetPostDetail extends BaseComponent {
         let tmpState = this.state;
         if (tmpState.valueComment.trim() !=''){
             let newComment = {
-                author: 'binh be',
-                content: tmpState.valueComment
+                createBy: 'binh be',
+                content: tmpState.valueComment,
+                createdAt: new Date().toISOString()
             }
             tmpState.comments.push(newComment)
             this.state.valueComment = ''

@@ -35,8 +35,12 @@ const getComment = async (req, res) => {
 
 const createComment = async (req, res) => {
     try {
+        const { user } = req;
         const newDataComment = req.body;
-        const newComment = await CommentModel.create(newDataComment)
+        const newComment = await CommentModel.create({
+            ...newDataComment,
+            createBy: user._id
+        })
         res.send({
             success: true,
             data: newComment,
@@ -56,12 +60,12 @@ const updateComment = async (req, res) => {
         const dataUpdateComment = req.body;
         const updateData = await CommentModel.findByIdAndUpdate(
             { _id: commentId },
-            updateData,
+            dataUpdateComment,
             { new: true }
         )
         res.send({
             success: true,
-            data: updateComment,
+            data: updateData,
         })
     } catch (error) {
         res.status(404).send({

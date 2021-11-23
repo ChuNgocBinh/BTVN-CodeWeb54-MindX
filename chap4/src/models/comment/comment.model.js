@@ -5,15 +5,18 @@ const CommentSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         required: true,
     },
-    createBy: String,
-    content : {
+    createBy: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+    },
+    content: {
         type: String,
         required: true,
     }
-},{
+}, {
     timestamps: true,
 })
 
-const CommentModel =  mongoose.model('comment', CommentSchema);
+const CommentModel = mongoose.model('comment', CommentSchema);
 
 module.exports = CommentModel;
