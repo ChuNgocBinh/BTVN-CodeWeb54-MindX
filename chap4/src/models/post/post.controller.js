@@ -8,10 +8,48 @@ const tokenProvider = require('../../common/tokenProvider');
 
 
 const getAllPost = async (req, res) => {
-    const posts = await PostModel.find();
+
+    const { keyword, createdBy, tags, skip, limit, sortDirection, sortField } = req.query;
+
+    const createdByFilter = createdBy ? { createdBy } : {};
+    const keywordFilter = keyword ? {
+        title: { $regex: new RegExp(keyword, 'i') }
+    } : {}
+    const tagsFilter = tags ? { tags } : {};
+
+    const filter = {
+        ...createdByFilter,
+        ...keywordFilter,
+        ...tagsFilter
+    }
+
+    const pagination = {
+        skip: skip ? Number(skip) : 0,
+        limit: limit ? Number(limit) : 4
+    }
+
+    const sortDirectionParams = sortDirection ? Number(sortDirection) : -1;
+    const sortFieldParams = sortField ? {
+        [sortField]: sortDirectionParams
+    } : {};
+
+
+    const [posts, totalPosts] = await Promise.all([
+        PostModel
+            .find(filter)
+            .populate('createdBy','-password')
+            .sort(sortFieldParams)
+            .skip(pagination.skip)
+            .limit(pagination.limit),
+        PostModel
+            .find(filter)
+            .countDocuments()
+    ])
+ 
     res.send({
         success: true,
-        data: posts
+        data: posts,
+        total: totalPosts
     })
 
 }
@@ -23,7 +61,6 @@ const getPost = async (req, res) => {
         success: true,
         data: post
     })
-
 }
 
 const createPost = async (req, res) => {

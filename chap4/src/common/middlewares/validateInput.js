@@ -4,6 +4,7 @@ const validateInput = (schema, property) => {
         const input = req[property];
         const { error } = schema.validate(input);
         const valid = error == null;
+        console.log(schema.validate(input));
         if (valid) {
             next()
         } else {

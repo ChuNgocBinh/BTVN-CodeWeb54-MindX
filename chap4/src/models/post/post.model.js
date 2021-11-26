@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const PostSchema = new mongoose.Schema({
     imgURL: {
-        type:String,
+        type: String,
         required: true
     },
-    title: { 
+    title: {
         type: String,
         required: true
     },
@@ -17,12 +17,16 @@ const PostSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    createBy:{
+    tags: [
+        { type: String }
+    ],
+    createdBy: {
         type: mongoose.Types.ObjectId,
+        ref: 'user',
         required: true
     }
-},{
-    timestamps:true,
+}, {
+    timestamps: true,
 })
 
 const PostModel = mongoose.model('post', PostSchema);
