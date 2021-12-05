@@ -1,0 +1,19 @@
+.ColorBox {
+    margin-top: 32px;
+    background-color: #fff;
+    display: inline-flex;
+}
+
+.ColorBox .Color-item{
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    margin: 6px;
+    display: inline-block;
+}
+
+.ColorBox .active {
+    transform: scale(1.1);
+    outline: 1px solid #333;
+}

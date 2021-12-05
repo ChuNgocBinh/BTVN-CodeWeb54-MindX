@@ -1,0 +1,19 @@
+.TagBox{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 32px;
+    justify-content: center;
+}
+
+.TagBox .Tag{
+    padding: 4px;
+    background-color: #fff;
+    margin: 4px;
+    cursor: pointer;
+}
+
+.TagBox .active{
+    background-color: #df9815;
+    color: #fff;
+}
+

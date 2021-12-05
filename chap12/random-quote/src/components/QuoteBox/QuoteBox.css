@@ -1,0 +1,33 @@
+.Quote-Box{
+    width: 600px;
+    /* background-color: #fff; */
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 34px;
+}
+
+.Quote-Box .Quote-content{
+    font-size: 24px;
+}
+
+.Quote-Box .Quote-author{
+    font-size: 12px;
+    margin-top: 8px;
+    text-align: right;
+}
+
+.Quote-Box .Quote-action{
+    margin-top: 12px;
+}
+
+.Quote-Box .Quote-action .Quote-new-btn{
+    padding: 6px 12px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+}
