@@ -26,7 +26,7 @@ export default class TagBox extends Component {
 
     render() {
         const { activeTag, } = this.state
-        const { handeTagAction } = this.props
+        // const { handeTagAction } = this.props
         return (
             <div className="TagBox">
                 {tags.map(tag => {

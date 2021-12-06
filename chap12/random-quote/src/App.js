@@ -33,7 +33,7 @@ export default class App extends Component {
 
 
   render() {
-    const { activeColor, tagAction } = this.state
+    const { activeColor } = this.state
     return (
       <div className="App" style={{ backgroundColor: activeColor }} >
         <Header />

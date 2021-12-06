@@ -98,7 +98,7 @@ export default class QuoteBox extends Component {
     const { activeColor } = this.props
     return (
       <div className="Quote-Box" style={{ color: activeColor }}>
-        {this.renderQuote(activeColor)}
+        {this.renderQuote()}
         <div className="Quote-action">
           <button
             className="Quote-new-btn"
